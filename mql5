@@ -1,0 +1,136 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                                   Big Bang EA5.mq5 |
+//|                       Copyright 2022, Forex Robot Easy Team       |
+//|                                          Website: forexroboteasy.com|
+//+------------------------------------------------------------------+
+
+// Include necessary libraries
+#include <Trade\Trade.mqh>
+#include <MovingAverages\MovingAverages.mqh>
+#include <Trend\TrendByAngle.mqh>
+
+// Global variables
+CTrade trade; // Trade class object
+double lotSize = 0.1; // Default lot size
+double stopLoss = 50; // Default stop loss in pips
+double takeProfit = 100; // Default take profit in pips
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   // Set trade parameters
+   trade.SetExpertMagicNumber(123456); // Set magic number for trades
+   trade.SetDeviationInPoints(20); // Set deviation for trade execution
+
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // Do any necessary cleanup here
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Get the current SAR value
+   double sarValue = iSAR(Symbol(), PERIOD_CURRENT);
+
+   // Check if the current SAR value is below the current price
+   if (sarValue < Ask)
+   {
+      // Check if we have an open position
+      if (!trade.PositionSelect(Symbol()))
+      {
+         // Open a long position
+         trade.Buy(lotSize, Ask, Ask - stopLoss * _Point, Ask + takeProfit * _Point);
+      }
+   }
+   // Check if the current SAR value is above the current price
+   else if (sarValue > Bid)
+   {
+      // Check if we have an open position
+      if (!trade.PositionSelect(Symbol()))
+      {
+         // Open a short position
+         trade.Sell(lotSize, Bid, Bid + stopLoss * _Point, Bid - takeProfit * _Point);
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Custom function to optimize trading performance                  |
+//+------------------------------------------------------------------+
+void OptimizeTradingPerformance()
+{
+   // Add optimization code here
+}
+
+//+------------------------------------------------------------------+
+//| Custom function to customize software inputs                      |
+//+------------------------------------------------------------------+
+void CustomizeInputs()
+{
+   // Add code to customize inputs here
+}
+
+//+------------------------------------------------------------------+
+//| Custom function to test software efficiency                       |
+//+------------------------------------------------------------------+
+void TestEfficiency()
+{
+   // Add code to test efficiency here
+}
+
+//+------------------------------------------------------------------+
+//| Custom function to enable scalping                               |
+//+------------------------------------------------------------------+
+void EnableScalping()
+{
+   // Add code to enable scalping here
+}
+
+//+------------------------------------------------------------------+
+//| Custom function to follow and capitalize on trends                |
+//+------------------------------------------------------------------+
+void FollowAndCapitalizeOnTrends()
+{
+   // Add code to follow and capitalize on trends here
+}
+
+//+------------------------------------------------------------------+
+//| Expert start function                                            |
+//+------------------------------------------------------------------+
+void OnStart()
+{
+   // Implement the SAR trend trading strategy as the primary trading algorithm
+   FollowAndCapitalizeOnTrends();
+
+   // Develop a fully automated, multicurrency Expert Advisor
+   // that can execute trades based on the SAR strategy
+   OnTick();
+
+   // Ensure that the software follows the golden rule of Forex trading
+   // which is to never trade against the trend
+
+   // Optimize the trading performance of the software
+   OptimizeTradingPerformance();
+
+   // Customize the inputs of the software
+   CustomizeInputs();
+
+   // Test the software's efficiency on different currency pairs
+   TestEfficiency();
+
+   // Develop the necessary trading functions to enable the software
+   // to act as a scalper that follows and capitalizes on trends
+   EnableScalping();
+}
